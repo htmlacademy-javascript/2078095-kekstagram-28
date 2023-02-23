@@ -49,13 +49,7 @@ function getNumber(string){
     }
   }
 
-  if (number === ''){
-
-    return NaN;
-  }
-
-  number = Number(number);
-  return number;
+  return parseInt(number, 10);
 }
 
 getNumber('1 кефир, 0.5 батона');
@@ -74,28 +68,19 @@ function enhanceString (string, minLength,addSymbol){
   let tempString = '';
 
 
-  while (count > 0){
+  for (; count > 0; count = count - addSymbol.length){
 
-    if ((count - addSymbol.length) < 0){
+    if (count - addSymbol.length < 0){
 
-      while ((count - addSymbol.length) < 0){
-        let k = 1;
-        addSymbol = addSymbol.substring(0, addSymbol.length - k);
-        k++;
-      }
-      if (count - addSymbol.length === 0){
-        count = count - addSymbol.length;
-        tempString += addSymbol;
-      }
-    } else{
-      count = count - addSymbol.length;
-      tempString += addSymbol;
+      addSymbol = addSymbol.slice(0, count);
+      tempString = addSymbol + tempString;
+    }else{
+      tempString = addSymbol + tempString;
     }
   }
   tempString += string;
   string = tempString;
   return string;
-
 }
 
 enhanceString('q',4,'werty');
