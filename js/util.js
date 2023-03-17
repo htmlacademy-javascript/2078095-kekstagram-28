@@ -1,4 +1,27 @@
+const getRandomInteger = (a, b) => {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
 
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+
+const createRandomId = (min, max) => {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
 
 function checkLength(string, max){
 
@@ -9,8 +32,6 @@ function checkLength(string, max){
 
   return false;
 }
-
-checkLength('проверка', 10);
 
 function checkPalindrom(string){
 
@@ -30,9 +51,6 @@ function checkPalindrom(string){
   return false;
 }
 
-checkPalindrom('довОд');
-
-
 function getNumber(string){
 
   if (!isNaN(string)){
@@ -51,9 +69,6 @@ function getNumber(string){
 
   return parseInt(number, 10);
 }
-
-getNumber('1 кефир, 0.5 батона');
-
 
 // имяФункции('1', 2, '0');      // '01'
 //имяФункции('q', 4, 'werty');  // 'werq'
@@ -83,5 +98,4 @@ function enhanceString (string, minLength,addSymbol){
   return string;
 }
 
-enhanceString('q',4,'werty');
-
+export {getRandomInteger, getRandomArrayElement,createRandomId};
