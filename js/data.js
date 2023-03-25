@@ -42,12 +42,13 @@ const getComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
+
 const getImageDescription = () => ({
   id: createId(),
   url: `photos/${ createUrlId() }.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger(15,200),
-  comments: getComment(),
+  comments: Array.from({length: getRandomInteger(1,5)}, getComment),
 });
 
 const getImageDescriptions = () => Array.from({length: DESCRIPTION_COUNT}, getImageDescription);
