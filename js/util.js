@@ -98,4 +98,6 @@ function enhanceString (string, minLength,addSymbol){
   return string;
 }
 
-export {getRandomInteger, getRandomArrayElement,createRandomId};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomInteger, getRandomArrayElement,createRandomId,isEscapeKey};

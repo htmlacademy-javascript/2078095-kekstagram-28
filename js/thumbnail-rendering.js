@@ -17,3 +17,5 @@ photosDescriptions.forEach(({url, likes, comments}) => {
 });
 
 pictures.append(pictureListFragment);
+
+export {photosDescriptions};
