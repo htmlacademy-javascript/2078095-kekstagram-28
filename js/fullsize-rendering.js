@@ -1,5 +1,5 @@
-import {photosDescriptions} from './thumbnail-rendering.js';
-import {isEscapeKey} from './util.js';
+import { photosDescriptions } from './thumbnail-rendering.js';
+import { isEscapeKey } from './util.js';
 
 const imagesContainer = document.querySelector('.pictures');
 
@@ -16,37 +16,47 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-function openImageModal(evt){
-
-  if (evt.target.matches('.picture__img')){
-
+function openImageModal(evt) {
+  if (evt.target.matches('.picture__img')) {
     const userPicture = evt.target.closest('.picture');
-
     const thumbnails = Array.from(imagesContainer.querySelectorAll('.picture'));
-
     const index = thumbnails.indexOf(userPicture);
-
     bigPicture.querySelector('.big-picture__img').querySelector('img').src = imagesData[index].url;
-
     bigPicture.querySelector('.likes-count').textContent = imagesData[index].likes;
-    bigPicture.querySelector('.comments-count').textContent = imagesData[index].comments.length;
-
     bigPicture.querySelector('.social__comments').innerHTML = '';
-    imagesData[index].comments.forEach((comment) => {
-      addComment(comment);
-    });
 
     bigPicture.querySelector('.social__caption').textContent = imagesData[index].description;
 
-    bigPicture.querySelector('.social__comment-count').classList.add('hidden');
-    bigPicture.querySelector('.comments-loader').classList.add('hidden');
-
     document.querySelector('body').classList.add('modal-open');
-
     bigPicture.classList.remove('hidden');
-
     document.addEventListener('keydown', onDocumentKeydown);
 
+    const commentMass = imagesData[index].comments.slice();
+    const commentLoader = bigPicture.querySelector('.comments-loader');
+
+    const currentCommentCount = bigPicture.querySelector('.current-comments-count');
+    bigPicture.querySelector('.comments-count').textContent = imagesData[index].comments.length;
+
+    commentLoader.classList.remove('hidden');
+    let count = 0;
+    const loadComments = function () {
+
+      const commentsToShow = commentMass.splice(0, 5); // удаляем и получаем первые 5 комментариев
+      commentsToShow.forEach((comment) => {
+        addComment(comment);
+        count++;
+      });
+
+      currentCommentCount.textContent = count;
+
+      if (commentMass.length === 0) {
+        commentLoader.classList.add('hidden');
+      }
+    };
+
+    commentLoader.addEventListener('click', loadComments);
+
+    loadComments();
   }
 }
 
@@ -73,7 +83,8 @@ function addComment(commentData){
   bigPicture.querySelector('.social__comments').append(comment);
 }
 
-function closeImageModal () {
+
+function closeImageModal() {
   document.querySelector('body').classList.remove('modal-open');
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
