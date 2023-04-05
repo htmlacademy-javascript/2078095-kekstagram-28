@@ -18,15 +18,42 @@ const pristine = new Pristine(uploadForm,{
   errorTextTag: 'div',
 });
 
+
+let errorMessage = '';
+
 function validateHashtag(value){
-  return hashtag.test(value);
+
+  const str = value.toLowerCase();
+  const hashtags = str.split(' ');
+
+  for (let i = 0; i < hashtags.length; i++){
+
+    if (!hashtag.test(hashtags[i])){
+      errorMessage = 'Хэш-тэг не соответствует требованиям';
+      return false;
+    }
+    if (hashtags.indexOf(hashtags[i]) !== i){
+      errorMessage = 'У картинки не может быть два одинаковых хэш-тега';
+      return false;
+    }
+  }
+
+  if (hashtags.length > 5){
+    errorMessage = 'У картинки не может быть более 5 хэш-тегов';
+    return false;
+  }
+
+  return true;
 }
 
 function validateDescription(value){
   return value.length <= 140;
 }
+function validateErrorMessage(){
+  return errorMessage;
+}
 
-pristine.addValidator(hashtagInput,validateHashtag, 'Хэш-тэг не соответствует требованиям');
+pristine.addValidator(hashtagInput,validateHashtag, validateErrorMessage);
 pristine.addValidator(descriptionInput,validateDescription,'Текст комментария должен быть до 140 символов');
 
 
@@ -45,6 +72,8 @@ const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     if (document.activeElement === descriptionInput) {
+      evt.stopPropagation();
+    } else if (document.activeElement === hashtagInput) {
       evt.stopPropagation();
     } else{
       // eslint-disable-next-line no-use-before-define
@@ -67,6 +96,8 @@ const closeEditingForm = function(){
   document.querySelector('body').classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   uploadInput.value = '';
+  hashtagInput.value = '';
+  descriptionInput.value = '';
 };
 
 uploadInput.addEventListener('change',openEditingForm);
