@@ -6,3 +6,5 @@ import './image-upload.js';
 import './image-viewing.js';
 import './fullsize-rendering.js';
 import './form-validation.js';
+import './effects.js';
+import './scale.js';
