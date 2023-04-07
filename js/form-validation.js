@@ -1,5 +1,6 @@
 import { isEscapeKey } from './util.js';
-
+import {resetScale} from './scale.js';
+import {resetEffect, hideSlider} from './effects.js';
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = document.querySelector('#upload-file');
 const uploadFormModal = document.querySelector('.img-upload__overlay');
@@ -84,6 +85,7 @@ const onDocumentKeydown = (evt) => {
 
 const openEditingForm = function(){
 
+  hideSlider();
   uploadFormModal.classList.remove('hidden');
   document.addEventListener('keydown',onDocumentKeydown);
   document.querySelector('body').classList.add('modal-open');
@@ -92,12 +94,13 @@ const openEditingForm = function(){
 
 const closeEditingForm = function(){
 
+  uploadForm.reset();
+  pristine.reset();
+  resetScale();
+  resetEffect();
   uploadFormModal.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
-  uploadInput.value = '';
-  hashtagInput.value = '';
-  descriptionInput.value = '';
 };
 
 uploadInput.addEventListener('change',openEditingForm);
