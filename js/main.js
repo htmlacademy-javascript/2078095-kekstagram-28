@@ -6,6 +6,7 @@ import {renderingPhotos,filterDefaultClick,filterRandomClick,filterDiscussedClic
 import { showAlert, debounce, RERENDER_DELAY} from './util.js';
 import {showSuccessMessage, showErrorMessage} from './message.js';
 import {closeEditingForm, setOnFormSubmit} from './form-validation.js';
+import './avatar.js';
 
 setOnFormSubmit(async (data) => {
   try {
