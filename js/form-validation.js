@@ -1,11 +1,12 @@
 import { isEscapeKey } from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffect, hideSlider} from './effects.js';
+
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = document.querySelector('#upload-file');
 const uploadFormModal = document.querySelector('.img-upload__overlay');
 const closeButton = document.querySelector('#upload-cancel');
-
+const uploadButton = document.querySelector('.img-upload__submit');
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
 const hashtagInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
@@ -24,6 +25,9 @@ let errorMessage = '';
 
 function validateHashtag(value){
 
+  if (value === ''){
+    return true;
+  }
   const str = value.toLowerCase();
   const hashtags = str.split(' ');
 
@@ -57,17 +61,6 @@ function validateErrorMessage(){
 pristine.addValidator(hashtagInput,validateHashtag, validateErrorMessage);
 pristine.addValidator(descriptionInput,validateDescription,'Текст комментария должен быть до 140 символов');
 
-
-uploadForm.addEventListener('submit',(evt) =>{
-
-  evt.preventDefault();
-  const isValid = pristine.validate();
-
-  if (!isValid){
-    return;
-  }
-  uploadForm.submit();
-});
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -103,7 +96,30 @@ const closeEditingForm = function(){
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
+const setOnFormSubmit = (cb) => {
+  uploadForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+
+    if(isValid) {
+      blockSubmit();
+      await cb(new FormData(uploadForm));
+      unblockSubmit();
+    }
+  });
+};
+
+function blockSubmit (){
+  uploadButton.disabled = true;
+  uploadButton.textContent = 'Публикую';
+}
+
+function unblockSubmit (){
+  uploadButton.disabled = false;
+  uploadButton.textContent = 'Опубликовать';
+}
+
 uploadInput.addEventListener('change',openEditingForm);
 closeButton.addEventListener('click',closeEditingForm);
 
-
+export {onDocumentKeydown, closeEditingForm, setOnFormSubmit};
