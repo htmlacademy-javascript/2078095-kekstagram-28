@@ -1,7 +1,8 @@
-const scaleSmaller = document.querySelector('.scale__control--smaller');
-const scaleBigger = document.querySelector('.scale__control--bigger');
-const scaleInput = document.querySelector('.scale__control--value');
-const imagePreview = document.querySelector ('.img-upload__preview');
+const uploadFormModal = document.querySelector('.img-upload__overlay');
+const scaleSmaller = uploadFormModal.querySelector('.scale__control--smaller');
+const scaleBigger = uploadFormModal.querySelector('.scale__control--bigger');
+const scaleInput = uploadFormModal.querySelector('.scale__control--value');
+const imagePreview = uploadFormModal.querySelector ('.img-upload__preview');
 
 const STEP = 25;
 const MIN_VALUE = 25;
@@ -13,37 +14,31 @@ const scaleImage = (value) => {
   scaleInput.value = `${value}%`;
 };
 
+const resetScale = () => scaleImage(DEFAULT);
+
 const onScaleSmaller = () =>{
 
-  scaleBigger.disabled = false;
   const currentValue = parseInt(scaleInput.value,10);
-  const newValue = currentValue - STEP;
-  scaleImage(newValue);
+  let newValue = currentValue - STEP;
 
-  if (newValue === MIN_VALUE){
-    scaleSmaller.setAttribute('disabled',true);
+  if (newValue < MIN_VALUE){
+    newValue = MIN_VALUE;
   }
+  scaleImage(newValue);
 };
 
 const onScaleBigger = () =>{
   const currentValue = parseInt(scaleInput.value,10);
-  if (currentValue === MAX_VALUE){
-    scaleBigger.setAttribute('disabled',true);
-    return;
-  }
 
-  scaleSmaller.disabled = false;
-  const newValue = currentValue + STEP;
+  let newValue = currentValue + STEP;
+
+  if (newValue > MAX_VALUE){
+    newValue = MAX_VALUE;
+  }
   scaleImage(newValue);
-
-  if (newValue === MAX_VALUE){
-    scaleBigger.setAttribute('disabled',true);
-  }
 };
 
 scaleSmaller.addEventListener('click', onScaleSmaller);
 scaleBigger.addEventListener('click', onScaleBigger);
-
-const resetScale = () => scaleImage(DEFAULT);
 
 export {resetScale};

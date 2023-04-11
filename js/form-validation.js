@@ -3,13 +3,16 @@ import {resetScale} from './scale.js';
 import {resetEffect, hideSlider} from './effects.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
-const uploadInput = document.querySelector('#upload-file');
-const uploadFormModal = document.querySelector('.img-upload__overlay');
-const closeButton = document.querySelector('#upload-cancel');
-const uploadButton = document.querySelector('.img-upload__submit');
+const uploadInput = uploadForm.querySelector('#upload-file');
+const uploadFormModal = uploadForm.querySelector('.img-upload__overlay');
+const closeButton = uploadForm.querySelector('#upload-cancel');
+const uploadButton = uploadForm.querySelector('.img-upload__submit');
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
-const hashtagInput = document.querySelector('.text__hashtags');
-const descriptionInput = document.querySelector('.text__description');
+const hashtagInput = uploadForm.querySelector('.text__hashtags');
+const descriptionInput = uploadForm.querySelector('.text__description');
+
+const MAX_HASHTAGS = 5;
+const MAX_DESCRIPTION = 140;
 
 const pristine = new Pristine(uploadForm,{
   classTo: 'text',
@@ -28,7 +31,7 @@ function validateHashtag(value){
   if (value === ''){
     return true;
   }
-  const str = value.toLowerCase();
+  const str = value.toLowerCase().trim().replace(/\s+/g, ' ');
   const hashtags = str.split(' ');
 
   for (let i = 0; i < hashtags.length; i++){
@@ -43,7 +46,7 @@ function validateHashtag(value){
     }
   }
 
-  if (hashtags.length > 5){
+  if (hashtags.length > MAX_HASHTAGS){
     errorMessage = 'У картинки не может быть более 5 хэш-тегов';
     return false;
   }
@@ -52,7 +55,7 @@ function validateHashtag(value){
 }
 
 function validateDescription(value){
-  return value.length <= 140;
+  return value.length <= MAX_DESCRIPTION;
 }
 function validateErrorMessage(){
   return errorMessage;
@@ -70,22 +73,21 @@ const onDocumentKeydown = (evt) => {
     } else if (document.activeElement === hashtagInput) {
       evt.stopPropagation();
     } else{
-      // eslint-disable-next-line no-use-before-define
       closeEditingForm();
     }
   }
 };
 
-const openEditingForm = function(){
+function openEditingForm (){
 
   hideSlider();
   uploadFormModal.classList.remove('hidden');
   document.addEventListener('keydown',onDocumentKeydown);
   document.querySelector('body').classList.add('modal-open');
 
-};
+}
 
-const closeEditingForm = function(){
+function closeEditingForm (){
 
   uploadForm.reset();
   pristine.reset();
@@ -94,7 +96,7 @@ const closeEditingForm = function(){
   uploadFormModal.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
-};
+}
 
 const setOnFormSubmit = (cb) => {
   uploadForm.addEventListener('submit', async (evt) => {

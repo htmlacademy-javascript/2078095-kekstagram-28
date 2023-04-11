@@ -4,39 +4,24 @@ const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelecto
 
 const commentLoader = bigPicture.querySelector('.comments-loader');
 const likesCount = bigPicture.querySelector('.likes-count');
-const socialCommentCount = bigPicture.querySelector('.social__comment-count');
-const closeButton = document.querySelector('.big-picture__cancel');
-const socialDescription = document.querySelector('.social__caption');
+const closeButton = bigPicture.querySelector('.big-picture__cancel');
+const socialDescription = bigPicture.querySelector('.social__caption');
 
-const commentList = document.querySelector('.social__comments');
-const commentItem = document.querySelector('.social__comment');
+const currentCommentCount = bigPicture.querySelector('.current-comments-count');
+const fullCommentCount = bigPicture.querySelector('.comments-count');
+const commentList = bigPicture.querySelector('.social__comments');
+const commentItem = bigPicture.querySelector('.social__comment');
 
 let commentsToShow = 0;
 let comments = [];
 const COMMENTS_STEP = 5;
 
 const onDocumentKeydown = (evt) => {
-  if (isEscapeKey) {
+  if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeImageModal();
   }
 };
-
-function closeImageModal() {
-  bigPicture.classList.add('hidden');
-  document.querySelector('body').classList.remove('modal-open');
-  commentsToShow = 0;
-}
-
-function addListComments (data) {
-  const comment = commentItem.cloneNode(true);
-
-  comment.querySelector('.social__picture').src = data.avatar;
-  comment.querySelector('.social__picture').alt = data.name;
-  comment.querySelector('.social__text').textContent = data.message;
-
-  return comment;
-}
 
 const renderComments = () => {
   commentsToShow += COMMENTS_STEP;
@@ -56,8 +41,25 @@ const renderComments = () => {
 
   commentList.innerHTML = '';
   commentList.append(documentFragment);
-  socialCommentCount.innerHTML = `${commentsToShow} из <span class="comments-count">${comments.length}</span> комментариев`;
+  currentCommentCount.textContent = commentsToShow;
+  fullCommentCount.textContent = comments.length;
 };
+
+function closeImageModal() {
+  bigPicture.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+  commentsToShow = 0;
+}
+
+function addListComments (data) {
+  const comment = commentItem.cloneNode(true);
+
+  comment.querySelector('.social__picture').src = data.avatar;
+  comment.querySelector('.social__picture').alt = data.name;
+  comment.querySelector('.social__text').textContent = data.message;
+
+  return comment;
+}
 
 function renderFullPhoto (data) {
 
