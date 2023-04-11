@@ -6,12 +6,12 @@ const templatePicture = templateContent.querySelector('.picture');
 
 const pictureListFragment = document.createDocumentFragment();
 
-
 const imageFilters = document.querySelector('.img-filters');
-const buttonDefault = document.querySelector('#filter-default');
-const buttonRandom = document.querySelector('#filter-random');
-const buttonDiscussed = document.querySelector('#filter-discussed');
+const buttonDefault = imageFilters.querySelector('#filter-default');
+const buttonRandom = imageFilters.querySelector('#filter-random');
+const buttonDiscussed = imageFilters.querySelector('#filter-discussed');
 
+const IMAGES_COUNT = 10;
 let showType = 'DEFAULT';
 
 const filterButtons = document.querySelectorAll('.img-filters__button');
@@ -58,7 +58,7 @@ const filterImages = (data) => {
   if (showType === 'RANDOM'){
     const copyMass = data.slice();
     copyMass.sort(() => getRandomInteger(-1, 1));
-    return copyMass.slice(0,10);
+    return copyMass.slice(0,IMAGES_COUNT);
   }
   if (showType === 'DISCUSSED'){
     const copyMass = data.slice();

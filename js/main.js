@@ -37,5 +37,3 @@ try {
 
   showAlert(err);
 }
-
-
