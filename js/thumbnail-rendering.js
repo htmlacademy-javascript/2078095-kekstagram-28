@@ -1,6 +1,9 @@
-const pictures = document.querySelector('.pictures');
 import {renderFullPhoto} from './fullsize-rendering.js';
 import {getRandomInteger} from './util.js';
+
+const IMAGES_COUNT = 10;
+
+const pictures = document.querySelector('.pictures');
 const templateContent = document.querySelector('#picture').content;
 const templatePicture = templateContent.querySelector('.picture');
 
@@ -11,10 +14,9 @@ const buttonDefault = imageFilters.querySelector('#filter-default');
 const buttonRandom = imageFilters.querySelector('#filter-random');
 const buttonDiscussed = imageFilters.querySelector('#filter-discussed');
 
-const IMAGES_COUNT = 10;
-let showType = 'DEFAULT';
-
 const filterButtons = document.querySelectorAll('.img-filters__button');
+
+let showType = 'DEFAULT';
 
 function setActiveButton(clickedButton) {
 

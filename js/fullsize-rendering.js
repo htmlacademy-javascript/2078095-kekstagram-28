@@ -1,4 +1,7 @@
 import { isEscapeKey } from './util.js';
+
+const COMMENTS_STEP = 5;
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 
@@ -14,7 +17,6 @@ const commentItem = bigPicture.querySelector('.social__comment');
 
 let commentsToShow = 0;
 let comments = [];
-const COMMENTS_STEP = 5;
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {

@@ -1,7 +1,8 @@
-const isEscapeKey = (evt) => evt.key === 'Escape';
-
 const TIMEOUT = 3000;
 const RERENDER_DELAY = 500;
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 function showAlert (message) {
 
   const alertMessage = document.createElement('div');
