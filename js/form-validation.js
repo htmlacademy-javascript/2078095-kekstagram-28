@@ -2,17 +2,20 @@ import { isEscapeKey } from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffect, hideSlider} from './effects.js';
 
+const MAX_HASHTAGS = 5;
+const MAX_DESCRIPTION = 140;
+const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
+
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('#upload-file');
 const uploadFormModal = uploadForm.querySelector('.img-upload__overlay');
 const closeButton = uploadForm.querySelector('#upload-cancel');
 const uploadButton = uploadForm.querySelector('.img-upload__submit');
-const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
+
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
 const descriptionInput = uploadForm.querySelector('.text__description');
 
-const MAX_HASHTAGS = 5;
-const MAX_DESCRIPTION = 140;
+let errorMessage = '';
 
 const pristine = new Pristine(uploadForm,{
   classTo: 'text',
@@ -22,9 +25,6 @@ const pristine = new Pristine(uploadForm,{
   successClass: 'text__description--valid',
   errorTextTag: 'div',
 });
-
-
-let errorMessage = '';
 
 function validateHashtag(value){
 

@@ -1,12 +1,3 @@
-const imageElement = document.querySelector('.img-upload__preview img');
-const effectElement = document.querySelector('.effects');
-const sliderContainer = document.querySelector('.img-upload__effect-level');
-const slider = sliderContainer.querySelector('.effect-level__slider');
-const effectLevel = sliderContainer.querySelector('.effect-level__value');
-
-const showSlider = () => sliderContainer.classList.remove('hidden');
-const hideSlider = () => sliderContainer.classList.add('hidden');
-
 const EFFECTS = [
   {
     name: 'none',
@@ -59,8 +50,17 @@ const EFFECTS = [
 ];
 
 const DEFAULT_EFFECT = EFFECTS[0];
+
+const imageElement = document.querySelector('.img-upload__preview img');
+const effectElement = document.querySelector('.effects');
+const sliderContainer = document.querySelector('.img-upload__effect-level');
+const slider = sliderContainer.querySelector('.effect-level__slider');
+const effectLevel = sliderContainer.querySelector('.effect-level__value');
+
 let chosenEffect = DEFAULT_EFFECT;
 
+const showSlider = () => sliderContainer.classList.remove('hidden');
+const hideSlider = () => sliderContainer.classList.add('hidden');
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 const updateSlider = () => {

@@ -1,5 +1,6 @@
 import {onDocumentKeydown} from './form-validation.js';
 import { isEscapeKey } from './util.js';
+
 const successMessage = document.querySelector('#success').content.querySelector('.success');
 const successButton = successMessage.querySelector('.success__button');
 const errorMessage = document.querySelector('#error').content.querySelector('.error');
